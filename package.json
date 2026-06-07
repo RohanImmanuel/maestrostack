@@ -1,6 +1,6 @@
 {
   "name": "maestrostack",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Config-driven CLI for running Maestro mobile tests on BrowserStack App Automate.",
   "keywords": [
     "maestro",
