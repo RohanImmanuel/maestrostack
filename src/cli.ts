@@ -83,6 +83,7 @@ program
   .option("--dry-run", "validate and print the payload without making API calls")
   .option("--device <name>", "override run.devices (repeatable)", collect, [])
   .option("--execute <path>", "override run.execute (repeatable)", collect, [])
+  .option("--max-parallel <n>", "run at most N listed devices at once (sequential batches)", (v) => parseInt(v, 10))
   .action(action(runCommand));
 
 program.parseAsync(process.argv).catch((err) => {

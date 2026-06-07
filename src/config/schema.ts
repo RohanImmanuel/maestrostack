@@ -62,6 +62,11 @@ const runSchema = z.object({
     .min(1, "run.devices must contain at least one device"),
   executeMode: z.enum(["explicit", "main"]).default("explicit"),
   execute: z.array(nonEmpty("run.execute entry")).optional(),
+  maxParallel: z
+    .number({ invalid_type_error: "run.maxParallel must be a number" })
+    .int("run.maxParallel must be an integer")
+    .positive("run.maxParallel must be a positive integer")
+    .optional(),
   options: optionsSchema,
 });
 

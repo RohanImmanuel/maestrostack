@@ -111,6 +111,7 @@ run:
 |---|---|---|
 | `upload`  | `path` | Uploads a local `.apk` (Android) / `.ipa` (iOS). |
 | `app_url` | `appUrl` | Reuses an existing `bs://` app reference. |
+| `custom_id` | `customId` | References the latest app uploaded with that custom id; no upload. |
 
 ### Execute modes
 
@@ -118,6 +119,39 @@ run:
   sends them as the BrowserStack `execute` array - no root `main.yaml` needed.
 - **`main`**: omit `run.execute` and provide a `main.yaml` at the suite root.
   BrowserStack runs it as the entrypoint.
+
+### Parallel execution
+
+Set `run.maxParallel` to cap how many of your **listed devices** run at once.
+MaestroStack splits `run.devices` into sequential batches of at most `maxParallel`
+devices, submits one build per batch, and **waits for each build to finish before
+starting the next**:
+
+```yaml
+run:
+  maxParallel: 2
+  devices:
+    - Samsung Galaxy S20-10.0
+    - Google Pixel 7-13.0
+    - iPhone 15-17.0
+    - OnePlus 9-11.0
+```
+
+With four devices and `maxParallel: 2`, that runs two builds of two devices each,
+one after the other.
+
+- Every device runs the full suite; nothing is assigned randomly.
+- BrowserStack has no native per-build concurrency cap, so MaestroStack enforces
+  it by submitting batched builds sequentially (polling each build's status until
+  it completes).
+- How many sessions can actually run at once still depends on your BrowserStack
+  plan's parallel limit. `maxParallel` lets you cap concurrency at or below that;
+  if a batch is bigger than your available parallels, BrowserStack queues the
+  extra sessions until a slot frees up.
+- Because it waits for completion, a batched `run` is long-running (it blocks
+  until every batch finishes). Without `maxParallel`, `run` submits a single
+  build and returns immediately as before.
+- Override per run with `--max-parallel <n>`.
 
 ### Authentication
 
@@ -154,6 +188,7 @@ Secrets are never printed.
   BrowserStack payload + endpoint, without making any API calls.
 - `--device <name>` - override `run.devices` (repeatable).
 - `--execute <path>` - override `run.execute` (repeatable; forces explicit mode).
+- `--max-parallel <n>` - override `run.maxParallel` (run at most N listed devices at once).
 
 ```bash
 maestrostack run -c maestrostack.android.smoke.yml
@@ -170,7 +205,8 @@ maestrostack run --execute smoke/login.yml --dry-run
 3. Zips the suite under a `Flows/` prefix preserving folder structure.
 4. Resolves the app (uploads the local binary or uses an existing `bs://` URL).
 5. Uploads the suite zip.
-6. POSTs the build to `.../maestro/v2/{android|ios}/build` and prints the build id.
+6. POSTs the build to `.../maestro/v2/{android|ios}/build` and prints the build id
+   plus its BrowserStack dashboard URL.
 
 Example output:
 
@@ -186,6 +222,7 @@ Devices:
 App: bs://...
 Test suite: bs://...
 Build ID: 5c5ab4338cec13aeb78f7a6977344556ac00bccd6
+Build URL: https://app-automate.browserstack.com/dashboard/v2/builds/5c5ab4338cec13aeb78f7a6977344556ac00bccd6
 ```
 
 ## Development

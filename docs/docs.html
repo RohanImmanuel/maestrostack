@@ -3,8 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MaestroStack Documentation</title>
-  <meta name="description" content="Documentation for MaestroStack: install, configure and run Maestro tests on BrowserStack from one command." />
+  <title>MaestroStack Documentation - install, configure and run Maestro on BrowserStack</title>
+  <meta name="description" content="MaestroStack documentation: install the CLI, write the config, understand execute modes, parallel execution, every command, and how a run works on BrowserStack App Automate." />
+  <link rel="canonical" href="https://rohanimmanuel.github.io/maestrostack/docs.html" />
+  <meta name="theme-color" content="#112d4e" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="MaestroStack" />
+  <meta property="og:url" content="https://rohanimmanuel.github.io/maestrostack/docs.html" />
+  <meta property="og:title" content="MaestroStack Documentation" />
+  <meta property="og:description" content="Install, configure and run Maestro tests on BrowserStack App Automate from one command." />
+  <meta property="og:image" content="https://rohanimmanuel.github.io/maestrostack/assets/img/og-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://rohanimmanuel.github.io/maestrostack/assets/img/og-card.png" />
+
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -83,6 +95,7 @@
             <li><a href="#config">Config file</a></li>
             <li><a href="#app-source">App source</a></li>
             <li><a href="#execute-modes">Execute modes</a></li>
+            <li><a href="#parallel">Parallel execution</a></li>
             <li><a href="#devices">Devices</a></li>
             <li><a href="#auth">Authentication</a></li>
           </ul>
@@ -95,6 +108,7 @@
           <ul>
             <li><a href="#how-it-works">How a run works</a></li>
             <li><a href="#development">Development</a></li>
+            <li><a href="#faq">FAQ</a></li>
           </ul>
         </div>
       </aside>
@@ -197,6 +211,7 @@ maestrostack run</pre>
     - Samsung Galaxy S20-10.0
     - Google Pixel 7-13.0
   <span class="k">executeMode</span>: <span class="v">explicit</span>      <span class="c"># explicit | main</span>
+  <span class="k">maxParallel</span>: <span class="v">2</span>             <span class="c"># optional: max devices at once</span>
   <span class="k">execute</span>:
     - smoke/login.yml
     - regression/checkout.yml
@@ -215,9 +230,16 @@ maestrostack run</pre>
             <tbody>
               <tr><td><code>upload</code></td><td><code>path</code></td><td>Uploads a local <code>.apk</code> (Android) or <code>.ipa</code> (iOS).</td></tr>
               <tr><td><code>app_url</code></td><td><code>appUrl</code></td><td>Reuses an existing <code>bs://</code> app reference.</td></tr>
+              <tr><td><code>custom_id</code></td><td><code>customId</code></td><td>References the app by custom id; BrowserStack resolves it to the latest upload with that id. No upload.</td></tr>
             </tbody>
           </table>
-          <p>Validation checks that an Android run points at a <code>.apk</code> and an iOS run at an <code>.ipa</code>, and that the file exists before anything is uploaded.</p>
+          <p>For <code>upload</code>, validation checks that an Android run points at a <code>.apk</code> and an iOS run at an <code>.ipa</code>, and that the file exists before anything is uploaded. <code>app_url</code> and <code>custom_id</code> reference an app already on BrowserStack, so nothing is uploaded for them.</p>
+          <div class="code">
+            <div class="code-head"><span>maestrostack.yml</span><button class="copy-btn">Copy</button></div>
+<pre><span class="k">app</span>:
+  <span class="k">source</span>: <span class="v">custom_id</span>
+  <span class="k">customId</span>: SampleApp   <span class="c"># latest app uploaded with this id</span></pre>
+          </div>
         </section>
 
         <section class="docs-section" id="execute-modes">
@@ -238,6 +260,32 @@ maestrostack run</pre>
             <div class="code-head"><span>maestrostack.yml</span><button class="copy-btn">Copy</button></div>
 <pre><span class="k">run</span>:
   <span class="k">executeMode</span>: <span class="v">main</span></pre>
+          </div>
+        </section>
+
+        <section class="docs-section" id="parallel">
+          <h2>Parallel execution</h2>
+          <p>Set <code>run.maxParallel</code> to cap how many of your listed devices run at once. MaestroStack splits <code>run.devices</code> into sequential batches of at most that many devices, submits one build per batch, and waits for each build to finish before starting the next.</p>
+          <div class="code">
+            <div class="code-head"><span>maestrostack.yml</span><button class="copy-btn">Copy</button></div>
+<pre><span class="k">run</span>:
+  <span class="k">maxParallel</span>: <span class="v">2</span>
+  <span class="k">devices</span>:
+    - Samsung Galaxy S20-10.0
+    - Google Pixel 7-13.0
+    - iPhone 15-17.0
+    - OnePlus 9-11.0</pre>
+          </div>
+          <p>With four devices and <code>maxParallel: 2</code>, that runs two builds of two devices each, one after the other.</p>
+          <ul class="bullets">
+            <li>Every device runs the full suite; nothing is assigned randomly.</li>
+            <li>BrowserStack has no native per-build concurrency cap, so MaestroStack enforces it with sequential batched builds (polling each build's status until it completes).</li>
+            <li>How many sessions can actually run at once depends on your BrowserStack plan's parallel limit; <code>maxParallel</code> caps concurrency at or below that.</li>
+            <li>A batched run is long-running: it blocks until every batch finishes. Without <code>maxParallel</code>, <code>run</code> submits a single build and returns immediately.</li>
+            <li>Override per run with <code>--max-parallel &lt;n&gt;</code>.</li>
+          </ul>
+          <div class="callout">
+            <strong>Account parallels still apply.</strong> Within a batch, BrowserStack runs sessions up to your plan's purchased parallels; if a batch is larger than that, the extra sessions queue until a slot frees up.
           </div>
         </section>
 
@@ -296,6 +344,7 @@ BROWSERSTACK_ACCESS_KEY=my_access_key</pre>
               <tr><td><code>--dry-run</code></td><td>Validate, show the files that would be zipped and print the build payload. No API calls.</td></tr>
               <tr><td><code>--device &lt;name&gt;</code></td><td>Override <code>run.devices</code>. Repeatable.</td></tr>
               <tr><td><code>--execute &lt;path&gt;</code></td><td>Override <code>run.execute</code>. Repeatable. Forces explicit mode.</td></tr>
+              <tr><td><code>--max-parallel &lt;n&gt;</code></td><td>Override <code>run.maxParallel</code>. Run at most N listed devices at once.</td></tr>
             </tbody>
           </table>
           <div class="code">
@@ -335,7 +384,7 @@ Payload:
             <li>Zips the suite under a <code>Flows/</code> prefix, preserving folder structure with forward-slash paths.</li>
             <li>Resolves the app by uploading the local binary or reusing an existing <code>bs://</code> URL.</li>
             <li>Uploads the suite zip.</li>
-            <li>Posts the build to <code>/app-automate/maestro/v2/{android|ios}/build</code> and prints the build ID.</li>
+            <li>Posts the build to <code>/app-automate/maestro/v2/{android|ios}/build</code> and prints the build ID and its BrowserStack dashboard URL.</li>
           </ol>
           <div class="code">
             <div class="code-head"><span>example output</span><button class="copy-btn">Copy</button></div>
@@ -349,7 +398,8 @@ Devices:
 
 App: bs://...
 Test suite: bs://...
-Build ID: 5c5ab4338cec13aeb78f7a6977344556ac00bccd6</pre>
+Build ID: 5c5ab4338cec13aeb78f7a6977344556ac00bccd6
+Build URL: https://app-automate.browserstack.com/dashboard/v2/builds/5c5ab4338cec13aeb78f7a6977344556ac00bccd6</pre>
           </div>
         </section>
 
@@ -366,9 +416,78 @@ npm test            # vitest</pre>
           <p>MaestroStack is open source and licensed under MIT.</p>
         </section>
 
+        <section class="docs-section" id="faq">
+          <h2>FAQ</h2>
+
+          <h3>What is MaestroStack?</h3>
+          <p>MaestroStack is a config-driven command-line tool that packages your Maestro flow folders, uploads the app and test suite to BrowserStack App Automate, and triggers Maestro builds across one or more real devices from a single command.</p>
+
+          <h3>How do I run Maestro tests on BrowserStack?</h3>
+          <p>Install MaestroStack with <code>npm install -g maestrostack</code>, create a config with <code>maestrostack init</code>, set your <code>BROWSERSTACK_USERNAME</code> and <code>BROWSERSTACK_ACCESS_KEY</code>, then run <code>maestrostack run</code>. It uploads the app and suite and starts the build for you.</p>
+
+          <h3>Does MaestroStack work on Windows and Linux?</h3>
+          <p>Yes. It runs the same on macOS, Linux and Windows and needs Node.js 18 or newer. All paths are normalized internally and there are no platform-specific shell calls.</p>
+
+          <h3>Do I need a main.yaml file?</h3>
+          <p>Not in explicit mode, which is the default - you list the flows in <code>run.execute</code>. A <code>main.yaml</code> at the suite root is only required when you set <code>executeMode: main</code>.</p>
+
+          <h3>How does parallel execution work?</h3>
+          <p>Set <code>run.maxParallel</code> to cap how many of your listed devices run at once. MaestroStack splits the devices into sequential batches of that size and waits for each build to finish before starting the next, so concurrency stays controlled and every device runs the full suite.</p>
+
+          <h3>Is MaestroStack free and open source?</h3>
+          <p>Yes. It is open source under the MIT license and published on npm as <code>maestrostack</code>.</p>
+
+          <h3>What do I need to use it?</h3>
+          <p>A BrowserStack App Automate account with API credentials, a Maestro test suite (flow files in subfolders), and either a local app binary (<code>.apk</code> or <code>.ipa</code>) or an existing <code>bs://</code> app URL.</p>
+        </section>
+
       </div>
     </div>
   </main>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is MaestroStack?",
+        "acceptedAnswer": { "@type": "Answer", "text": "MaestroStack is a config-driven command-line tool that packages your Maestro flow folders, uploads the app and test suite to BrowserStack App Automate, and triggers Maestro builds across one or more real devices from a single command." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I run Maestro tests on BrowserStack?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Install MaestroStack with 'npm install -g maestrostack', create a config with 'maestrostack init', set your BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY, then run 'maestrostack run'. It uploads the app and suite and starts the build for you." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does MaestroStack work on Windows and Linux?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. It runs the same on macOS, Linux and Windows and needs Node.js 18 or newer. All paths are normalized internally and there are no platform-specific shell calls." }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need a main.yaml file?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Not in explicit mode, which is the default - you list the flows in run.execute. A main.yaml at the suite root is only required when you set executeMode: main." }
+      },
+      {
+        "@type": "Question",
+        "name": "How does parallel execution work?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Set run.maxParallel to cap how many of your listed devices run at once. MaestroStack splits the devices into sequential batches of that size and waits for each build to finish before starting the next, so concurrency stays controlled and every device runs the full suite." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is MaestroStack free and open source?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. It is open source under the MIT license and published on npm as maestrostack." }
+      },
+      {
+        "@type": "Question",
+        "name": "What do I need to use it?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A BrowserStack App Automate account with API credentials, a Maestro test suite with flow files in subfolders, and either a local app binary (.apk or .ipa) or an existing bs:// app URL." }
+      }
+    ]
+  }
+  </script>
 
   <footer class="footer">
     <div class="container footer-inner">

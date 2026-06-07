@@ -1,0 +1,28 @@
+# MaestroStack
+
+> MaestroStack is a config-driven, open source TypeScript CLI that runs Maestro
+> mobile tests on BrowserStack App Automate real devices. It packages your Maestro
+> flow folders, uploads the app and test suite to BrowserStack, and triggers
+> Maestro builds across one or more real devices from a single command:
+> `maestrostack run`.
+
+Key facts:
+- Install: `npm install -g maestrostack` (Node.js 18+, works on macOS, Linux and Windows).
+- License: MIT. Package name on npm: `maestrostack`.
+- Commands: `init`, `validate`, `package`, `upload-app`, `upload-suite`, `run`.
+- Configuration is a single `maestrostack.yml` file with `auth`, `platform`
+  (android or ios), `app`, `suite`, and `run` sections.
+- Credentials (`BROWSERSTACK_USERNAME`, `BROWSERSTACK_ACCESS_KEY`) come from the
+  environment or a `.env` file and are never printed.
+- Execute modes: `explicit` (list flows in `run.execute`) or `main` (a `main.yaml`
+  at the suite root).
+- Parallel execution: `run.maxParallel` caps how many listed devices run at once;
+  MaestroStack submits sequential batched builds and waits for each to finish.
+- `maestrostack run --dry-run` previews the files and BrowserStack payload without
+  making any API calls.
+
+## Docs
+
+- [Documentation](https://rohanimmanuel.github.io/maestrostack/docs.html): install, configuration, commands, execute modes, parallel execution, FAQ.
+- [Source on GitHub](https://github.com/RohanImmanuel/maestrostack)
+- [npm package](https://www.npmjs.com/package/maestrostack)

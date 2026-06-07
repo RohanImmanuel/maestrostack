@@ -6,12 +6,27 @@
     "maestro",
     "browserstack",
     "app-automate",
+    "maestro browserstack",
     "mobile-testing",
+    "mobile test automation",
+    "e2e testing",
     "cli",
     "android",
-    "ios"
+    "ios",
+    "appium-alternative",
+    "ci",
+    "typescript"
   ],
   "license": "MIT",
+  "homepage": "https://rohanimmanuel.github.io/maestrostack/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RohanImmanuel/maestrostack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RohanImmanuel/maestrostack/issues"
+  },
+  "author": "Rohan Immanuel",
   "type": "module",
   "bin": {
     "maestrostack": "dist/cli.js"

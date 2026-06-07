@@ -38,14 +38,12 @@ describe("validateApp", () => {
     );
   });
 
-  it("rejects the deferred custom_id source", async () => {
+  it("accepts the custom_id source without a local file", async () => {
     const yaml = validConfigYaml().replace(
       "app:\n  source: upload\n  path: ./apps/app.apk",
       "app:\n  source: custom_id\n  customId: SampleApp",
     );
-    await expect(validateApp(config(yaml), project.dir)).rejects.toThrow(
-      /not supported in the MVP/,
-    );
+    await expect(validateApp(config(yaml), project.dir)).resolves.toBeUndefined();
   });
 
   it("passes for app_url source without a local file", async () => {

@@ -18,18 +18,12 @@ const PLATFORM_EXT: Record<Config["platform"], string> = {
 };
 
 /**
- * Semantic validation of the app block beyond the Zod schema: deferred sources,
- * file existence and platform/extension agreement.
+ * Semantic validation of the app block beyond the Zod schema: file existence and
+ * platform/extension agreement. (app_url and custom_id reference an existing
+ * BrowserStack app, so there is nothing local to check.)
  */
 export async function validateApp(config: Config, cwd: string): Promise<void> {
   const { app, platform } = config;
-
-  if (app.source === "custom_id") {
-    throw new MaestroStackError(
-      'app.source "custom_id" is not supported in the MVP.',
-      ["Use source: upload (with a path) or source: app_url (with a bs:// url)."],
-    );
-  }
 
   if (app.source === "upload") {
     const appPath = path.resolve(cwd, app.path);
@@ -91,12 +85,7 @@ export async function validateCommand(opts: GlobalOptions): Promise<void> {
 
 function describeApp(config: Config): string {
   const { app } = config;
-  switch (app.source) {
-    case "upload":
-      return `upload ${app.path}`;
-    case "app_url":
-      return `app_url ${app.appUrl}`;
-    default:
-      return app.source;
-  }
+  if (app.source === "upload") return `upload ${app.path}`;
+  if (app.source === "app_url") return `app_url ${app.appUrl}`;
+  return `custom_id ${app.customId}`;
 }

@@ -21,25 +21,33 @@ export function buildPath(platform: Platform): string {
   return `/app-automate/maestro/v2/${platform}/build`;
 }
 
+/** Public BrowserStack App Automate dashboard URL for a build. */
+export function buildDashboardUrl(buildId: string): string {
+  return `https://app-automate.browserstack.com/dashboard/v2/builds/${buildId}`;
+}
+
 /**
  * Construct the BrowserStack build payload from config and the resolved app /
  * test-suite references. Pure and side-effect free so it can be unit-tested and
  * reused for the `--dry-run` preview.
  *
- * - `execute` is included only in explicit mode (in main mode BrowserStack runs
- *   the suite's main.yaml).
+ * - `devices` defaults to `run.devices` but can be overridden with a subset, so
+ *   the runner can submit one build per device batch when `maxParallel` is set.
+ * - In explicit mode the flows go into `execute`; in main mode BrowserStack runs
+ *   the suite's main.yaml.
  * - `networkLogs` / `deviceLogs` are JSON booleans, included only when set.
  */
 export function buildPayload(
   config: Config,
   resolved: { app: string; testSuite: string },
+  devices: string[] = config.run.devices,
 ): BuildPayload {
   const { run } = config;
   const payload: BuildPayload = {
     app: resolved.app,
     testSuite: resolved.testSuite,
     project: run.project,
-    devices: run.devices,
+    devices,
   };
 
   if (run.executeMode === "explicit" && run.execute && run.execute.length > 0) {

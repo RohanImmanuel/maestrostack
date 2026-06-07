@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif">
+  <rect width="1200" height="630" fill="#f9f7f7"/>
+  <rect x="20" y="20" width="1160" height="590" fill="none" stroke="#112d4e" stroke-width="8"/>
+
+  <!-- accent blocks -->
+  <rect x="80" y="86" width="150" height="44" rx="6" fill="#dbe2ef" stroke="#112d4e" stroke-width="4"/>
+  <text x="155" y="117" text-anchor="middle" font-size="22" font-weight="700" fill="#112d4e">CLI</text>
+
+  <!-- wordmark -->
+  <text x="78" y="250" font-size="104" font-weight="700" fill="#112d4e">Maestro<tspan fill="#3f72af">Stack</tspan></text>
+
+  <!-- tagline -->
+  <text x="82" y="330" font-size="40" font-weight="500" fill="#112d4e">Run Maestro tests on real devices</text>
+  <text x="82" y="384" font-size="40" font-weight="700" fill="#112d4e">with <tspan fill="#3f72af">one command</tspan></text>
+
+  <!-- command chip -->
+  <rect x="82" y="430" width="560" height="78" rx="8" fill="#112d4e"/>
+  <text x="112" y="481" font-size="34" font-weight="600" font-family="'SFMono-Regular',Menlo,Consolas,monospace" fill="#f9f7f7"><tspan fill="#7aa3d6">$ </tspan>maestrostack run</text>
+
+  <!-- url -->
+  <text x="82" y="566" font-size="26" font-weight="600" fill="#4a5d75">rohanimmanuel.github.io/maestrostack</text>
+
+  <!-- mascot bear -->
+  <g transform="translate(815,225) scale(4.7)">
+    <circle cx="17" cy="15" r="9" fill="#3f72af" stroke="#112d4e" stroke-width="3"/>
+    <circle cx="47" cy="15" r="9" fill="#3f72af" stroke="#112d4e" stroke-width="3"/>
+    <circle cx="17" cy="15" r="3.6" fill="#dbe2ef"/>
+    <circle cx="47" cy="15" r="3.6" fill="#dbe2ef"/>
+    <circle cx="32" cy="34" r="20" fill="#3f72af" stroke="#112d4e" stroke-width="3"/>
+    <circle cx="22" cy="40" r="3" fill="#7aa3d6"/>
+    <circle cx="42" cy="40" r="3" fill="#7aa3d6"/>
+    <ellipse cx="32" cy="39" rx="12" ry="9.5" fill="#f9f7f7" stroke="#112d4e" stroke-width="2.5"/>
+    <circle cx="25" cy="30" r="2.7" fill="#112d4e"/>
+    <circle cx="39" cy="30" r="2.7" fill="#112d4e"/>
+    <ellipse cx="32" cy="35" rx="3.2" ry="2.4" fill="#112d4e"/>
+    <path d="M32 37.4 v3 M32 40.4 q-3.5 2.4 -6.5 0 M32 40.4 q3.5 2.4 6.5 0" fill="none" stroke="#112d4e" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>
