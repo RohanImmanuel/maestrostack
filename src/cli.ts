@@ -8,6 +8,10 @@ import { validateCommand } from "./commands/validate.js";
 import { isMaestroStackError } from "./utils/errors.js";
 import { logger, setDebug } from "./utils/logger.js";
 
+/** Injected at build time by tsup from package.json (see tsup.config.ts). */
+declare const __MS_VERSION__: string;
+const VERSION = typeof __MS_VERSION__ === "string" ? __MS_VERSION__ : "0.0.0";
+
 const program = new Command();
 
 /** Accumulate repeated CLI options (e.g. --device a --device b) into an array. */
@@ -45,7 +49,7 @@ function action<T extends object>(
 program
   .name("maestrostack")
   .description("Config-driven CLI for running Maestro tests on BrowserStack App Automate.")
-  .version("0.1.0")
+  .version(VERSION)
   .option("-c, --config <path>", "path to the config file")
   .option("--debug", "enable debug logging");
 
