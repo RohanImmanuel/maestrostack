@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MaestroStack Documentation</title>
+  <meta name="description" content="Documentation for MaestroStack: install, configure and run Maestro tests on BrowserStack from one command." />
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css?v=3" />
+  <link rel="stylesheet" href="assets/css/docs.css?v=2" />
+</head>
+<body>
+  <!-- Stacky, the MaestroStack mascot. Defined once, reused via <use>. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="ms-bear" viewBox="0 0 64 64">
+      <circle cx="17" cy="15" r="9" fill="#3f72af" stroke="#112d4e" stroke-width="3"/>
+      <circle cx="47" cy="15" r="9" fill="#3f72af" stroke="#112d4e" stroke-width="3"/>
+      <circle cx="17" cy="15" r="3.6" fill="#dbe2ef"/>
+      <circle cx="47" cy="15" r="3.6" fill="#dbe2ef"/>
+      <circle cx="32" cy="34" r="20" fill="#3f72af" stroke="#112d4e" stroke-width="3"/>
+      <circle cx="22" cy="40" r="3" fill="#7aa3d6"/>
+      <circle cx="42" cy="40" r="3" fill="#7aa3d6"/>
+      <ellipse cx="32" cy="39" rx="12" ry="9.5" fill="#f9f7f7" stroke="#112d4e" stroke-width="2.5"/>
+      <circle cx="25" cy="30" r="2.7" fill="#112d4e"/>
+      <circle cx="39" cy="30" r="2.7" fill="#112d4e"/>
+      <ellipse cx="32" cy="35" rx="3.2" ry="2.4" fill="#112d4e"/>
+      <path d="M32 37.4 v3 M32 40.4 q-3.5 2.4 -6.5 0 M32 40.4 q3.5 2.4 6.5 0" fill="none" stroke="#112d4e" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+  </svg>
+
+  <a class="skip-link" href="#overview">Skip to content</a>
+
+  <header class="nav scrolled" id="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html" aria-label="MaestroStack home">        <span class="brand-name">Maestro<span class="brand-accent">Stack</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html#flow">How it works</a>
+        <a href="index.html#features">Features</a>
+        <a href="docs.html">Docs</a>
+        <a class="nav-cta" href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="docs-main">
+    <section class="docs-hero">
+      <svg class="mascot mascot-tr"><use href="#ms-bear" /></svg>
+      <div class="container">
+        <p class="eyebrow">Documentation</p>
+        <h1>Everything you need to run MaestroStack</h1>
+        <p>Install the CLI, write one config file, and trigger Maestro builds on BrowserStack real devices. This guide covers configuration, every command, and how a run works end to end.</p>
+        <div class="hero-actions">
+          <span class="install-pill" data-copy="npm install -g maestrostack">
+            <code>npm install -g maestrostack</code>
+            <span class="copy-hint"><i class="fa-solid fa-copy" aria-hidden="true"></i> click to copy</span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <div class="container docs-layout">
+      <!-- Sidebar -->
+      <aside class="docs-side" id="docsSide">
+        <button class="docs-toc-toggle" id="tocToggle" aria-expanded="false">On this page</button>
+        <div class="docs-nav-groups">
+          <h4>Getting started</h4>
+          <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#install">Install</a></li>
+            <li><a href="#quick-start">Quick start</a></li>
+            <li><a href="#layout">Project layout</a></li>
+          </ul>
+          <h4>Configuration</h4>
+          <ul>
+            <li><a href="#config">Config file</a></li>
+            <li><a href="#app-source">App source</a></li>
+            <li><a href="#execute-modes">Execute modes</a></li>
+            <li><a href="#devices">Devices</a></li>
+            <li><a href="#auth">Authentication</a></li>
+          </ul>
+          <h4>CLI</h4>
+          <ul>
+            <li><a href="#commands">Commands</a></li>
+            <li><a href="#run">The run command</a></li>
+          </ul>
+          <h4>Reference</h4>
+          <ul>
+            <li><a href="#how-it-works">How a run works</a></li>
+            <li><a href="#development">Development</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <div class="docs-content">
+
+        <section class="docs-section" id="overview">
+          <h2>Overview</h2>
+          <p>MaestroStack is a config-driven CLI that wraps BrowserStack App Automate's Maestro workflow. Instead of uploading the app, zipping and uploading the suite, copying URLs and hand-building a payload by hand each time, you describe the run once and trigger it with a single command.</p>
+          <div class="code">
+            <div class="code-head"><span>terminal</span><button class="copy-btn">Copy</button></div>
+            <pre>maestrostack run</pre>
+          </div>
+          <p>It runs the same way on your machine and in CI, on macOS, Linux and Windows.</p>
+        </section>
+
+        <section class="docs-section" id="install">
+          <h2>Install</h2>
+          <p>MaestroStack is distributed on npm. It needs Node.js 18 or newer.</p>
+          <div class="code">
+            <div class="code-head"><span>terminal</span><button class="copy-btn">Copy</button></div>
+            <pre>npm install -g maestrostack</pre>
+          </div>
+          <p>You can also run it without a global install using <code>npx maestrostack &lt;command&gt;</code>.</p>
+        </section>
+
+        <section class="docs-section" id="quick-start">
+          <h2>Quick start</h2>
+          <ol class="bullets">
+            <li>Scaffold a config with <code>maestrostack init --android</code>.</li>
+            <li>Provide BrowserStack credentials as environment variables.</li>
+            <li>Validate locally, then preview with a dry run.</li>
+            <li>Trigger the real build.</li>
+          </ol>
+          <div class="code">
+            <div class="code-head"><span>terminal</span><button class="copy-btn">Copy</button></div>
+<pre>maestrostack init --android
+
+export BROWSERSTACK_USERNAME=...
+export BROWSERSTACK_ACCESS_KEY=...
+
+maestrostack validate
+maestrostack run --dry-run
+maestrostack run</pre>
+          </div>
+        </section>
+
+        <section class="docs-section" id="layout">
+          <h2>Project layout</h2>
+          <p>MaestroStack encourages a simple structure. Maestro flows live in subfolders; the tool config sits at the root.</p>
+          <div class="code">
+            <div class="code-head"><span>mobile-tests/</span><button class="copy-btn">Copy</button></div>
+<pre>mobile-tests/
+  maestrostack.yml      # tool config, not a Maestro flow
+  smoke/
+    login.yml           # Maestro flow
+    signup.yml
+  regression/
+    checkout.yml
+  apps/
+    app-release.apk</pre>
+          </div>
+          <div class="callout">
+            <strong>Root YAML rule.</strong> Root-level YAML files are treated as config, not Maestro flows. Keep flows in subfolders so <code>maestrostack.yml</code> never gets confused with <code>smoke/login.yml</code>.
+          </div>
+        </section>
+
+        <section class="docs-section" id="config">
+          <h2>Config file</h2>
+          <p><code>maestrostack init</code> writes a starter <code>maestrostack.yml</code>. Here is a full example with every block.</p>
+          <div class="code">
+            <div class="code-head"><span>maestrostack.yml</span><button class="copy-btn">Copy</button></div>
+<pre><span class="k">version</span>: <span class="v">1</span>
+
+<span class="k">auth</span>:
+  <span class="k">username</span>: ${BROWSERSTACK_USERNAME}
+  <span class="k">accessKey</span>: ${BROWSERSTACK_ACCESS_KEY}
+
+<span class="k">platform</span>: <span class="v">android</span>            <span class="c"># android | ios</span>
+
+<span class="k">app</span>:
+  <span class="k">source</span>: <span class="v">upload</span>             <span class="c"># upload | app_url</span>
+  <span class="k">path</span>: ./apps/app-release.apk
+  <span class="k">customId</span>: SampleApp
+
+<span class="k">suite</span>:
+  <span class="k">root</span>: .
+  <span class="k">packageName</span>: Flows.zip
+  <span class="k">customId</span>: SampleTest
+  <span class="k">include</span>:
+    - smoke/**/*.yml
+    - regression/**/*.yml
+  <span class="k">exclude</span>:
+    - apps/**
+
+<span class="k">run</span>:
+  <span class="k">project</span>: Maestro_Test
+  <span class="k">devices</span>:
+    - Samsung Galaxy S20-10.0
+    - Google Pixel 7-13.0
+  <span class="k">executeMode</span>: <span class="v">explicit</span>      <span class="c"># explicit | main</span>
+  <span class="k">execute</span>:
+    - smoke/login.yml
+    - regression/checkout.yml
+  <span class="k">options</span>:
+    <span class="k">networkLogs</span>: <span class="v">true</span>
+    <span class="k">deviceLogs</span>: <span class="v">true</span></pre>
+          </div>
+          <p>Use a different file with the global <code>-c</code> flag, for example <code>maestrostack run -c maestrostack.staging.yml</code>.</p>
+        </section>
+
+        <section class="docs-section" id="app-source">
+          <h2>App source</h2>
+          <p>The <code>app.source</code> field selects how MaestroStack resolves the app under test.</p>
+          <table class="docs-table">
+            <thead><tr><th>source</th><th>Required</th><th>Behaviour</th></tr></thead>
+            <tbody>
+              <tr><td><code>upload</code></td><td><code>path</code></td><td>Uploads a local <code>.apk</code> (Android) or <code>.ipa</code> (iOS).</td></tr>
+              <tr><td><code>app_url</code></td><td><code>appUrl</code></td><td>Reuses an existing <code>bs://</code> app reference.</td></tr>
+            </tbody>
+          </table>
+          <p>Validation checks that an Android run points at a <code>.apk</code> and an iOS run at an <code>.ipa</code>, and that the file exists before anything is uploaded.</p>
+        </section>
+
+        <section class="docs-section" id="execute-modes">
+          <h2>Execute modes</h2>
+          <h3>Explicit mode (recommended)</h3>
+          <p>List the flow files in <code>run.execute</code>. MaestroStack sends them as the BrowserStack <code>execute</code> array. No root <code>main.yaml</code> is needed.</p>
+          <div class="code">
+            <div class="code-head"><span>maestrostack.yml</span><button class="copy-btn">Copy</button></div>
+<pre><span class="k">run</span>:
+  <span class="k">executeMode</span>: <span class="v">explicit</span>
+  <span class="k">execute</span>:
+    - smoke/login.yml
+    - regression/checkout.yml</pre>
+          </div>
+          <h3>Main mode</h3>
+          <p>Omit <code>run.execute</code> and provide a <code>main.yaml</code> at the suite root. BrowserStack runs it as the entrypoint. Validation fails early if <code>main.yaml</code> is missing.</p>
+          <div class="code">
+            <div class="code-head"><span>maestrostack.yml</span><button class="copy-btn">Copy</button></div>
+<pre><span class="k">run</span>:
+  <span class="k">executeMode</span>: <span class="v">main</span></pre>
+          </div>
+        </section>
+
+        <section class="docs-section" id="devices">
+          <h2>Devices</h2>
+          <p>List one or more real devices in <code>run.devices</code>. A single build request fans out across all of them. At least one device is required.</p>
+          <div class="code">
+            <div class="code-head"><span>maestrostack.yml</span><button class="copy-btn">Copy</button></div>
+<pre><span class="k">run</span>:
+  <span class="k">devices</span>:
+    - Samsung Galaxy S20-10.0
+    - Google Pixel 7-13.0</pre>
+          </div>
+          <p>For iOS, list iOS device strings such as <code>iPhone 15-17.0</code>. MaestroStack does not validate names against BrowserStack's catalogue, so use the device strings from your BrowserStack dashboard.</p>
+        </section>
+
+        <section class="docs-section" id="auth">
+          <h2>Authentication</h2>
+          <p>Credentials are referenced as <code>${VAR}</code> tokens in the config and resolved from the environment. A <code>.env</code> file in the working directory is loaded automatically.</p>
+          <div class="code">
+            <div class="code-head"><span>.env</span><button class="copy-btn">Copy</button></div>
+<pre>BROWSERSTACK_USERNAME=my_username
+BROWSERSTACK_ACCESS_KEY=my_access_key</pre>
+          </div>
+          <div class="callout warn">
+            <strong>Fail fast, stay quiet.</strong> If a referenced variable is missing, MaestroStack stops before any upload. Secrets are never printed, including in the dry-run payload preview.
+          </div>
+        </section>
+
+        <section class="docs-section" id="commands">
+          <h2>Commands</h2>
+          <table class="docs-table">
+            <thead><tr><th>Command</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>maestrostack init</code></td><td>Create a starter config. Flags: <code>--android</code>, <code>--ios</code>, <code>--force</code>.</td></tr>
+              <tr><td><code>maestrostack validate</code></td><td>Validate config, suite structure, app and devices.</td></tr>
+              <tr><td><code>maestrostack package</code></td><td>Discover flows and build the suite zip without uploading.</td></tr>
+              <tr><td><code>maestrostack upload-app</code></td><td>Upload only the app and print its <code>app_url</code>.</td></tr>
+              <tr><td><code>maestrostack upload-suite</code></td><td>Package and upload only the suite and print its <code>test_suite_url</code>.</td></tr>
+              <tr><td><code>maestrostack run</code></td><td>Package, upload and trigger a build.</td></tr>
+            </tbody>
+          </table>
+          <h3>Global options</h3>
+          <ul class="bullets">
+            <li><code>-c, --config &lt;path&gt;</code> uses a specific config file.</li>
+            <li><code>--debug</code> turns on verbose logging.</li>
+          </ul>
+        </section>
+
+        <section class="docs-section" id="run">
+          <h2>The run command</h2>
+          <p><code>maestrostack run</code> is the main command. It supports overrides and a safe preview mode.</p>
+          <table class="docs-table">
+            <thead><tr><th>Option</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>--dry-run</code></td><td>Validate, show the files that would be zipped and print the build payload. No API calls.</td></tr>
+              <tr><td><code>--device &lt;name&gt;</code></td><td>Override <code>run.devices</code>. Repeatable.</td></tr>
+              <tr><td><code>--execute &lt;path&gt;</code></td><td>Override <code>run.execute</code>. Repeatable. Forces explicit mode.</td></tr>
+            </tbody>
+          </table>
+          <div class="code">
+            <div class="code-head"><span>terminal</span><button class="copy-btn">Copy</button></div>
+<pre>maestrostack run -c maestrostack.android.smoke.yml
+maestrostack run --device "Google Pixel 7-13.0"
+maestrostack run --execute smoke/login.yml --dry-run</pre>
+          </div>
+          <h3>Dry-run output</h3>
+          <div class="code">
+            <div class="code-head"><span>maestrostack run --dry-run</span><button class="copy-btn">Copy</button></div>
+<pre>Dry run only. No API calls made.
+
+Would package:
+- smoke/login.yml
+- regression/checkout.yml
+
+Would call:
+POST /app-automate/maestro/v2/android/build
+
+Payload:
+{
+  "app": "&lt;resolved after upload&gt;",
+  "testSuite": "&lt;resolved after upload&gt;",
+  "project": "Maestro_Test",
+  "devices": ["Google Pixel 7-13.0"],
+  "execute": ["smoke/login.yml"]
+}</pre>
+          </div>
+        </section>
+
+        <section class="docs-section" id="how-it-works">
+          <h2>How a run works</h2>
+          <ol class="bullets">
+            <li>Loads <code>.env</code> and the config, substitutes <code>${VAR}</code> tokens, and validates everything.</li>
+            <li>Discovers flow files, ignoring root-level YAML, <code>node_modules</code> and <code>.git</code>.</li>
+            <li>Zips the suite under a <code>Flows/</code> prefix, preserving folder structure with forward-slash paths.</li>
+            <li>Resolves the app by uploading the local binary or reusing an existing <code>bs://</code> URL.</li>
+            <li>Uploads the suite zip.</li>
+            <li>Posts the build to <code>/app-automate/maestro/v2/{android|ios}/build</code> and prints the build ID.</li>
+          </ol>
+          <div class="code">
+            <div class="code-head"><span>example output</span><button class="copy-btn">Copy</button></div>
+<pre>MaestroStack run started
+
+Project: Maestro_Test
+Platform: android
+Devices:
+- Samsung Galaxy S20-10.0
+- Google Pixel 7-13.0
+
+App: bs://...
+Test suite: bs://...
+Build ID: 5c5ab4338cec13aeb78f7a6977344556ac00bccd6</pre>
+          </div>
+        </section>
+
+        <section class="docs-section" id="development">
+          <h2>Development</h2>
+          <p>Clone the repo and use the standard scripts. The BrowserStack integration is covered by tests with mocked HTTP, so the full package-to-payload path runs without a live account.</p>
+          <div class="code">
+            <div class="code-head"><span>terminal</span><button class="copy-btn">Copy</button></div>
+<pre>npm install
+npm run build       # bundle with tsup
+npm run typecheck   # tsc --noEmit
+npm test            # vitest</pre>
+          </div>
+          <p>MaestroStack is open source and licensed under MIT.</p>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="brand">        <span class="brand-name">Maestro<span class="brand-accent">Stack</span></span>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Home</a>
+        <a href="index.html#flow">How it works</a>
+        <a href="docs.html">Documentation</a>
+        <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+      <p class="footer-note">MaestroStack is an open source CLI. Maestro and BrowserStack are trademarks of their respective owners.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/main.js?v=2" defer></script>
+  <script src="assets/js/docs.js?v=2" defer></script>
+</body>
+</html>

@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MaestroStack - Run Maestro tests on BrowserStack with one command</title>
+  <meta name="description" content="MaestroStack is a config-driven CLI that packages your Maestro flows, uploads app and test artifacts to BrowserStack, and runs them on real devices from a single command." />
+
+  <meta property="og:title" content="MaestroStack" />
+  <meta property="og:description" content="Run Maestro tests on BrowserStack real devices with one command." />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css?v=3" />
+</head>
+<body>
+  <!-- Stacky, the MaestroStack mascot. Defined once, reused via <use>. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="ms-bear" viewBox="0 0 64 64">
+      <circle cx="17" cy="15" r="9" fill="#3f72af" stroke="#112d4e" stroke-width="3"/>
+      <circle cx="47" cy="15" r="9" fill="#3f72af" stroke="#112d4e" stroke-width="3"/>
+      <circle cx="17" cy="15" r="3.6" fill="#dbe2ef"/>
+      <circle cx="47" cy="15" r="3.6" fill="#dbe2ef"/>
+      <circle cx="32" cy="34" r="20" fill="#3f72af" stroke="#112d4e" stroke-width="3"/>
+      <circle cx="22" cy="40" r="3" fill="#7aa3d6"/>
+      <circle cx="42" cy="40" r="3" fill="#7aa3d6"/>
+      <ellipse cx="32" cy="39" rx="12" ry="9.5" fill="#f9f7f7" stroke="#112d4e" stroke-width="2.5"/>
+      <circle cx="25" cy="30" r="2.7" fill="#112d4e"/>
+      <circle cx="39" cy="30" r="2.7" fill="#112d4e"/>
+      <ellipse cx="32" cy="35" rx="3.2" ry="2.4" fill="#112d4e"/>
+      <path d="M32 37.4 v3 M32 40.4 q-3.5 2.4 -6.5 0 M32 40.4 q3.5 2.4 6.5 0" fill="none" stroke="#112d4e" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav" id="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html" aria-label="MaestroStack home">
+        <span class="brand-name">Maestro<span class="brand-accent">Stack</span></span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#problem">Why</a>
+        <a href="#flow">How it works</a>
+        <a href="#features">Features</a>
+        <a href="docs.html">Docs</a>
+        <a class="nav-cta" href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <svg class="mascot mascot-hero"><use href="#ms-bear" /></svg>
+
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <h1 class="hero-title">
+            Run Maestro tests on real devices with <span class="hl">one command</span>
+          </h1>
+          <p class="hero-sub">
+            MaestroStack packages your flow folders, uploads the app and test suite,
+            and starts a BrowserStack build across every device you list. From a single
+            config file. No glue scripts.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="docs.html">Get started</a>
+            <a class="btn btn-ghost" href="#flow">See how it works</a>
+          </div>
+
+          <div class="install-pill" data-copy="npm install -g maestrostack">
+            <code>npm install -g maestrostack</code>
+            <span class="copy-hint"><i class="fa-solid fa-copy" aria-hidden="true"></i> click to copy</span>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <div class="terminal" aria-hidden="true">
+            <div class="term-bar">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot teal"></span>
+              <span class="term-title">maestrostack</span>
+            </div>
+            <pre class="term-body" id="termBody"></pre>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PROBLEM / SOLUTION -->
+    <section class="section alt problem" id="problem">
+      <svg class="mascot mascot-tr"><use href="#ms-bear" /></svg>
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="kicker">The difference</span>
+          <h2>Eight manual steps to just one</h2>
+          <p class="lead">
+            By hand, BrowserStack's Maestro flow is eight separate steps, every single
+            time. MaestroStack folds all of them into a single command.
+          </p>
+        </div>
+
+        <div class="hub reveal" role="img" aria-label="Eight manual BrowserStack steps converging into one MaestroStack command: upload app, zip suite, upload zip, copy app URL, copy suite URL, build payload, set devices, call endpoint.">
+          <svg class="hub-lines" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <defs>
+              <marker id="ms-arrow" markerUnits="userSpaceOnUse" markerWidth="5.5" markerHeight="5.5" refX="4" refY="2.75" orient="auto">
+                <path d="M0 0 L5.5 2.75 L0 5.5 Z" fill="#112d4e" />
+              </marker>
+            </defs>
+            <!-- animated pulse flowing toward the centre (rendered first = underneath) -->
+            <line class="hub-flow" style="--i:0" x1="50"   y1="8"    x2="50" y2="33" pathLength="100" />
+            <line class="hub-flow" style="--i:1" x1="79.7" y1="20.3" x2="62" y2="38" pathLength="100" />
+            <line class="hub-flow" style="--i:2" x1="92"   y1="50"   x2="67" y2="50" pathLength="100" />
+            <line class="hub-flow" style="--i:3" x1="79.7" y1="79.7" x2="62" y2="62" pathLength="100" />
+            <line class="hub-flow" style="--i:4" x1="50"   y1="92"   x2="50" y2="67" pathLength="100" />
+            <line class="hub-flow" style="--i:5" x1="20.3" y1="79.7" x2="38" y2="62" pathLength="100" />
+            <line class="hub-flow" style="--i:6" x1="8"    y1="50"   x2="33" y2="50" pathLength="100" />
+            <line class="hub-flow" style="--i:7" x1="20.3" y1="20.3" x2="38" y2="38" pathLength="100" />
+            <!-- static spokes with arrowheads on top -->
+            <line class="hub-line" style="--i:0" x1="50"   y1="8"    x2="50" y2="33" pathLength="1" marker-end="url(#ms-arrow)" />
+            <line class="hub-line" style="--i:1" x1="79.7" y1="20.3" x2="62" y2="38" pathLength="1" marker-end="url(#ms-arrow)" />
+            <line class="hub-line" style="--i:2" x1="92"   y1="50"   x2="67" y2="50" pathLength="1" marker-end="url(#ms-arrow)" />
+            <line class="hub-line" style="--i:3" x1="79.7" y1="79.7" x2="62" y2="62" pathLength="1" marker-end="url(#ms-arrow)" />
+            <line class="hub-line" style="--i:4" x1="50"   y1="92"   x2="50" y2="67" pathLength="1" marker-end="url(#ms-arrow)" />
+            <line class="hub-line" style="--i:5" x1="20.3" y1="79.7" x2="38" y2="62" pathLength="1" marker-end="url(#ms-arrow)" />
+            <line class="hub-line" style="--i:6" x1="8"    y1="50"   x2="33" y2="50" pathLength="1" marker-end="url(#ms-arrow)" />
+            <line class="hub-line" style="--i:7" x1="20.3" y1="20.3" x2="38" y2="38" pathLength="1" marker-end="url(#ms-arrow)" />
+          </svg>
+
+          <div class="hub-center">
+            <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+            <span class="hub-center-cmd">maestrostack run</span>
+            <span class="hub-center-sub">one command</span>
+          </div>
+
+          <div class="hub-node" style="left:50%;top:8%;--i:0">
+            <span class="hub-disc"><span class="hub-num">1</span><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i></span>
+            <span class="hub-label">Upload app</span>
+          </div>
+          <div class="hub-node" style="left:79.7%;top:20.3%;--i:1">
+            <span class="hub-disc"><span class="hub-num">2</span><i class="fa-solid fa-file-zipper" aria-hidden="true"></i></span>
+            <span class="hub-label">Zip suite</span>
+          </div>
+          <div class="hub-node" style="left:92%;top:50%;--i:2">
+            <span class="hub-disc"><span class="hub-num">3</span><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+            <span class="hub-label">Upload zip</span>
+          </div>
+          <div class="hub-node" style="left:79.7%;top:79.7%;--i:3">
+            <span class="hub-disc"><span class="hub-num">4</span><i class="fa-solid fa-link" aria-hidden="true"></i></span>
+            <span class="hub-label">Copy app URL</span>
+          </div>
+          <div class="hub-node" style="left:50%;top:92%;--i:4">
+            <span class="hub-disc"><span class="hub-num">5</span><i class="fa-solid fa-link" aria-hidden="true"></i></span>
+            <span class="hub-label">Copy suite URL</span>
+          </div>
+          <div class="hub-node" style="left:20.3%;top:79.7%;--i:5">
+            <span class="hub-disc"><span class="hub-num">6</span><i class="fa-solid fa-code" aria-hidden="true"></i></span>
+            <span class="hub-label">Build payload</span>
+          </div>
+          <div class="hub-node" style="left:8%;top:50%;--i:6">
+            <span class="hub-disc"><span class="hub-num">7</span><i class="fa-solid fa-tablet-screen-button" aria-hidden="true"></i></span>
+            <span class="hub-label">Set devices</span>
+          </div>
+          <div class="hub-node" style="left:20.3%;top:20.3%;--i:7">
+            <span class="hub-disc"><span class="hub-num">8</span><i class="fa-solid fa-server" aria-hidden="true"></i></span>
+            <span class="hub-label">Call endpoint</span>
+          </div>
+
+          <div class="hub-to-one" aria-hidden="true"><i class="fa-solid fa-angles-down"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLOW / HOW IT WORKS -->
+    <section class="section flow" id="flow">
+      <svg class="mascot mascot-tl"><use href="#ms-bear" /></svg>
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="kicker">How it works</span>
+          <h2>From a folder of flows to a live build.</h2>
+          <p class="lead">Each run walks the same path. You describe the what, MaestroStack handles the how.</p>
+        </div>
+
+        <ol class="flow-list">
+          <li class="flow-step reveal">
+            <div class="flow-art" aria-hidden="true">
+              <i class="fa-solid fa-file-code"></i>
+            </div>
+            <div class="flow-text">
+              <span class="flow-num">01</span>
+              <h3>Describe it in one file</h3>
+              <p>A single <code>maestrostack.yml</code> holds your platform, app, devices and which flows to run.</p>
+            </div>
+          </li>
+
+          <li class="flow-step reveal">
+            <div class="flow-art" aria-hidden="true">
+              <i class="fa-solid fa-file-zipper"></i>
+            </div>
+            <div class="flow-text">
+              <span class="flow-num">02</span>
+              <h3>Flows get packaged</h3>
+              <p>MaestroStack finds your flow files in subfolders and zips them with the structure BrowserStack expects.</p>
+            </div>
+          </li>
+
+          <li class="flow-step reveal">
+            <div class="flow-art" aria-hidden="true">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+            </div>
+            <div class="flow-text">
+              <span class="flow-num">03</span>
+              <h3>App and suite upload</h3>
+              <p>Your binary and the suite zip are sent to BrowserStack, or it reuses an app you already uploaded.</p>
+            </div>
+          </li>
+
+          <li class="flow-step reveal">
+            <div class="flow-art" aria-hidden="true">
+              <i class="fa-solid fa-mobile-screen-button"></i>
+            </div>
+            <div class="flow-text">
+              <span class="flow-num">04</span>
+              <h3>Builds run on real devices</h3>
+              <p>One build request fans out across every device in your list, Android or iOS.</p>
+            </div>
+          </li>
+
+          <li class="flow-step reveal">
+            <div class="flow-art" aria-hidden="true">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="flow-text">
+              <span class="flow-num">05</span>
+              <h3>You get a build ID</h3>
+              <p>MaestroStack prints a clean summary and the BrowserStack build ID to follow your run.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section alt features" id="features">
+      <svg class="mascot mascot-tr"><use href="#ms-bear" /></svg>
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="kicker">What you get</span>
+          <h2>Built to be safe, clear and repeatable.</h2>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <span class="feature-icon"><i class="fa-solid fa-file-lines" aria-hidden="true"></i></span>
+            <h3>Config driven</h3>
+            <p>One YAML file is the source of truth. Swap configs per platform or environment with a flag.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-icon"><i class="fa-solid fa-eye" aria-hidden="true"></i></span>
+            <h3>Dry run first</h3>
+            <p>Preview the exact files and BrowserStack payload before a single byte leaves your machine.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-icon"><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i></span>
+            <h3>Many devices</h3>
+            <p>List as many real devices as you need. One run, every device, Android and iOS.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-icon"><i class="fa-solid fa-laptop-code" aria-hidden="true"></i></span>
+            <h3>Works everywhere</h3>
+            <p>The same behaviour on macOS, Linux and Windows. No platform surprises in CI.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-icon"><i class="fa-solid fa-lock" aria-hidden="true"></i></span>
+            <h3>Secrets stay secret</h3>
+            <p>Credentials load from env or a .env file, are validated up front, and never printed.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-icon"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></span>
+            <h3>Clear errors</h3>
+            <p>Missing device, bad path or absent flow fails early with a message you can act on.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- DRY RUN SHOWCASE -->
+    <section class="section showcase" id="showcase">
+      <svg class="mascot mascot-tr"><use href="#ms-bear" /></svg>
+      <div class="container showcase-grid">
+        <div class="showcase-copy reveal">
+          <span class="kicker">Safe by default</span>
+          <h2>Look before you launch.</h2>
+          <p class="lead">
+            <code>maestrostack run --dry-run</code> validates everything, shows the flows it
+            would package and prints the build payload with secrets hidden. Nothing is uploaded.
+          </p>
+          <a class="btn btn-primary" href="docs.html#run">Read the run docs</a>
+        </div>
+
+        <div class="showcase-visual reveal">
+          <div class="terminal">
+            <div class="term-bar">
+              <span class="dot red"></span><span class="dot yellow"></span><span class="dot teal"></span>
+              <span class="term-title">maestrostack run --dry-run</span>
+            </div>
+<pre class="term-body static">Dry run only. No API calls made.
+
+Would package:
+- smoke/login.yml
+- regression/checkout.yml
+
+Would call:
+POST /app-automate/maestro/v2/android/build
+
+Payload:
+{
+  "app": "&lt;resolved after upload&gt;",
+  "testSuite": "&lt;resolved after upload&gt;",
+  "project": "Maestro_Test",
+  "devices": ["Google Pixel 7-13.0"],
+  "execute": ["smoke/login.yml"]
+}</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta" id="cta">
+      <svg class="mascot mascot-cta"><use href="#ms-bear" /></svg>
+      <div class="container cta-inner reveal">
+        <h2>Ship your Maestro suite to real devices today.</h2>
+        <div class="install-pill big" data-copy="npm install -g maestrostack">
+          <code>npm install -g maestrostack</code>
+          <span class="copy-hint"><i class="fa-solid fa-copy" aria-hidden="true"></i> click to copy</span>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="docs.html">Read the docs</a>
+          <a class="btn btn-ghost" href="https://github.com/" target="_blank" rel="noopener">Star on GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="brand">
+        <span class="brand-name">Maestro<span class="brand-accent">Stack</span></span>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="#flow">How it works</a>
+        <a href="#features">Features</a>
+        <a href="docs.html">Documentation</a>
+        <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+      <p class="footer-note">MaestroStack is an open source CLI. Maestro and BrowserStack are trademarks of their respective owners.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/main.js?v=2" defer></script>
+</body>
+</html>

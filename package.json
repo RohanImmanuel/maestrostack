@@ -1,0 +1,51 @@
+{
+  "name": "maestrostack",
+  "version": "0.1.0",
+  "description": "Config-driven CLI for running Maestro mobile tests on BrowserStack App Automate.",
+  "keywords": [
+    "maestro",
+    "browserstack",
+    "app-automate",
+    "mobile-testing",
+    "cli",
+    "android",
+    "ios"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "maestrostack": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
+    "fast-glob": "^3.3.2",
+    "undici": "^6.21.0",
+    "yaml": "^2.6.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/archiver": "^6.0.3",
+    "@types/node": "^22.10.5",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.3",
+    "unzipper": "^0.12.3",
+    "vitest": "^2.1.8"
+  }
+}

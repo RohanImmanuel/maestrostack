@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.maestrostack/
+coverage/
+*.log
+
+# Editor
+.*/
+!.github/
+!.github/**
+
+# Local env / secrets
+.env
+.env.*
+!.env.example
