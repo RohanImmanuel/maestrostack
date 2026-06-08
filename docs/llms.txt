@@ -26,3 +26,4 @@ Key facts:
 - [Documentation](https://rohanimmanuel.github.io/maestrostack/docs.html): install, configuration, commands, execute modes, parallel execution, FAQ.
 - [Source on GitHub](https://github.com/RohanImmanuel/maestrostack)
 - [npm package](https://www.npmjs.com/package/maestrostack)
+- [Example project](https://github.com/RohanImmanuel/maestrostack-demo): a clone-and-run demo with a config, flows and a sample app.

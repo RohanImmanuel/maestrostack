@@ -42,6 +42,18 @@ maestrostack run --dry-run
 maestrostack run
 ```
 
+### Try the example
+
+Prefer a ready-made project? The
+[maestrostack-demo](https://github.com/RohanImmanuel/maestrostack-demo) repo is a
+clone-and-run example with a config, flows and a sample app:
+
+```bash
+git clone https://github.com/RohanImmanuel/maestrostack-demo
+cd maestrostack-demo
+maestrostack run --dry-run   # preview with no credentials needed
+```
+
 ## Project layout
 
 MaestroStack encourages this structure:
