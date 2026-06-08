@@ -249,6 +249,10 @@ npm test            # vitest
 The BrowserStack integration is covered by tests with mocked HTTP, so the full
 package to payload path runs without a live account.
 
+## Acknowledgements
+
+This project is tested with BrowserStack.
+
 ## License
 
 MIT
